@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="="width=device-width", initial-scale="1.0">
+    <title>App</title>
+    <script src ="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-black min-h-screen flex items-center justify-center">
+
+    <div class="w-full max-w-2xl bg-zinc-900 border border-white/10 
+                rounded-2xl p-10 shadow-2xl">
+
+        <h2 class="text-2xl font-semibold mb-6 text-white">
+            Create Post
+        </h2>
+        <form method="post" action="/post" enctype="multipart/form-data">
+        <input 
+            type="text"
+            placeholder="Enter post title"
+            class="w-full bg-zinc-800 text-white px-4 py-3 rounded-xl 
+                   border border-white/10 
+                   outline-none 
+                   focus:border-zinc-500 
+                   focus:ring-2 focus:ring-indigo-500/30
+                   transition duration-200" name="description"
+        />
+    <label class="block mt-4">
+      <span class="sr-only">Choose image</span>
+        <input type="file" name="image" accept="image/*" required
+             class="block w-full text-sm text-gray-500
+                    file:mr-4 file:py-2 file:px-4
+                    file:rounded-full file:border-0
+                    file:text-sm file:font-semibold
+                    file:bg-blue-50 file:text-blue-700
+                    hover:file:bg-blue-100
+                    cursor-pointer"/>
+    </label>
+        <button type="submit"
+            class="mt-4 w-full bg-blue-600 text-white py-2 px-4 rounded-lg
+                   hover:bg-blue-700 focus:outline-none focus:ring-2
+                   focus:ring-blue-500 focus:ring-offset-2">
+                Publish post
+            </button>
+
+        </form>
+    </div>
+
+</body>
+
+</html>
