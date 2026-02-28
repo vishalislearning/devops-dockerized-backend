@@ -5,6 +5,11 @@
     <meta name="viewport" content="="width=device-width", initial-scale="1.0">
     <title>App</title>
     <script src ="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script>
+  window.history.replaceState({}, document.title, window.location.pathname);
+</script>
 </head>
 <body>
     <div class="w-full h-screen bg-zinc-900 text-white p-10">
@@ -18,5 +23,28 @@
             <a class="text-blue-500" href="/create">new user?</a>
         </div>
     </div>
+     <% if (success) { %>
+<script>
+  Toastify({
+    text: "<%= success %>",
+    duration: 3000,
+    gravity: "top",
+    position: "right",
+    backgroundColor: "green"
+  }).showToast();
+</script>
+<% } %>
+<% if (error) { %>
+<script>
+  Toastify({
+    text: "<%=error%>",
+    duration: 3000,
+    gravity: "top",
+    position: "right",
+    backgroundColor: "red",
+    close: true
+  }).showToast();
+</script>
+<% } %>
 </body>
 </html>

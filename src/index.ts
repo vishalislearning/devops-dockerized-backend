@@ -94,6 +94,7 @@ app.get("/login", function(err, result){
 });
 
 app.post("/login", async function (req, res) {
+  
   const user = await User.findOne({ email: req.body.email });
 
   if (!user) {
