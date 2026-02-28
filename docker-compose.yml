@@ -7,8 +7,8 @@ services:
       - "3000:3000"
     depends_on:
       - mongo
-    environment:
-      - MONGO_URL=mongodb://mongo:27017/mydb
+    env_file:
+     - .env
 
   mongo:
     image: mongo:7

@@ -9,12 +9,29 @@ import jwt from "jsonwebtoken";
 import multer from "multer";
 import { imagekit } from "./imagekit.js";
 import { Post } from "./models/post.js";
-import "dotenv/config";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+
+dotenv.config();
+const app = express();
+
+mongoose.connect(process.env.MONGO_URI as string)
+  .then(() => {
+    console.log("MongoDB connected");
+
+    app.listen(3000, () => {
+      console.log("Server running on port 3000");
+    });
+  })
+  .catch(err => {
+    console.error("Mongo connection failed:", err);
+    process.exit(1);
+  });
+
 
 const upload = multer({storage: multer.memoryStorage()});
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const app = express();
 
 app.set("view engine","ejs");
 app.use(express.json());
@@ -128,8 +145,13 @@ app.get("/feed", async function(req, res) {
 
 /////////create post///////////
 app.get("/post",(req,res) => {
-  res.render('post')
-})
+      const token = req.cookies.token;
+     if (!token) {
+      return res.redirect("/feed?error=please login first");
+     }
+  res.redirect('post')
+});
+
 app.post("/post", upload.single("image"), async (req, res) => {
   
   const token = req.cookies.token;
@@ -249,4 +271,3 @@ app.post('/update/:id', upload.single("image"), async (req, res) => {
   }
 });
 
-app.listen(3000);
