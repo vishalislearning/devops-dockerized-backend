@@ -33,11 +33,16 @@ app.use((req, res, next) => {
   next();
 });
 
-/////////////// create user page////////////
 
 app.get("/", (req: Request, res: Response) => {
-  res.render('index');
+  res.redirect('/feed');
 });
+  
+  /////////////// create user page////////////
+app.get("/create", (req: Request, res: Response) => {
+  res.render("index");
+});
+
 app.post("/create",(req: Request, res: Response) => {
   let {username, email, password, age} = req.body;
   
@@ -55,7 +60,7 @@ app.post("/create",(req: Request, res: Response) => {
         },process.env.JWT_SECRET as string);
 
         res.cookie("token",token)
-        res.redirect('/feed')
+        res.redirect('/feed?success=Successfully created user ')
       })
     });
 });
@@ -91,15 +96,35 @@ app.post("/login", async function (req, res) {
 
     res.cookie("token", token, { httpOnly: true });
 
-    return res.redirect("/feed?success=Successfully logged in");
+    return res.redirect("/feed?success=Successfully logged in ");
   });
 });
 
 //////////////feed//////////////
 app.get("/feed", async function(req, res) {
-  let posts = await Post.find().lean();
-  res.render('feed',{posts})
-})
+  const token = req.cookies.token;
+  let user = null;
+
+  const posts = await Post.find().lean();
+
+  if (token) {
+    try {
+      const decoded = jwt.verify(
+        token,
+        process.env.JWT_SECRET as string
+      ) as { email: string };
+
+      user = await User.findOne({ email: decoded.email })
+        .select("username email")
+        .lean();
+
+    } catch (err) {
+      user = null;
+    }
+  }
+
+  res.render("feed", { posts, user });
+});
 
 /////////create post///////////
 app.get("/post",(req,res) => {
@@ -135,12 +160,13 @@ app.post("/post", upload.single("image"), async (req, res) => {
 app.post('/delete/:id', async (req, res) => {
 
   try {
-
     const token = req.cookies.token;
+     if (!token) {
+      return res.redirect("/feed?error=please login first");
+    }
     const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as { email: string };
     const user = await User.findOne({ email: decoded.email }).select("_id");
     const post = await Post.findById(req.params.id);
-
     if (post?.createdBy.toString() != user?.id) {
      return res.redirect("/feed?error=you cannot delete this post");
     }else{
@@ -169,7 +195,7 @@ app.get('/edit/:id', async function (req, res) {
     const user = await User.findOne({ email: decoded.email }).select("_id");
 
     if (!user) {
-      return res.redirect("/login");
+      return res.redirect("/feed?error=user not found");
     }
 
     const post = await Post.findById(req.params.id).lean();
