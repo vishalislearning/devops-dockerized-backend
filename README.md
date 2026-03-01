@@ -34,25 +34,6 @@ Designed with scalability, modular architecture, and security best practices.
 ---
 
 
-> ⚠️ Never commit your `.env` file to GitHub.
-
-Create a .env file:
----
-PORT=3000
-MONGO_URI=mongodb://localhost:27017/yourdbname
-JWT_SECRET=your_super_secret_key
-NODE_ENV=development
-
-IMAGEKIT_PUBLIC_KEY=your_public_key
-IMAGEKIT_PRIVATE_KEY=your_private_key
-IMAGEKIT_URL_ENDPOINT=https://ik.imagekit.io/yourid
----
-Images are:
-
-Uploaded securely
-Stored in cloud
-URL saved in MongoDB
-
 ## ▶️ Running Locally (Without Docker)
 
  1️⃣ Install Dependencies
