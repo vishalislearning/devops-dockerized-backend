@@ -15,7 +15,9 @@ jobs:
         with:
           host: 136.116.214.172
           username: psulfuricacid
-          key: ${{ secrets.SERVER_SSH_KEY }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd ~/devops-dockerized-backend
-            ./deploy.sh
+            git pull origin main
+            docker compose down
+            docker compose up -d --build
