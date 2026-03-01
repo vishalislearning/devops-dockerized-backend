@@ -60,9 +60,19 @@ This will:
 
 ### 2️⃣ Stop Containers
 docker-compose down
-
-
 ---
+
+⚙️ Environment Variables
+Create a .env file:
+PORT=5000
+MONGO_URI=mongodb://localhost:27017/yourdbname
+JWT_SECRET=your_super_secret_key
+NODE_ENV=development
+
+IMAGEKIT_PUBLIC_KEY=your_public_key
+IMAGEKIT_PRIVATE_KEY=your_private_key
+IMAGEKIT_URL_ENDPOINT=https://ik.imagekit.io/yourid
+
 
 ## 📡 API Endpoints
 
